@@ -276,5 +276,27 @@ exports['Dynamic Proxy'] = nodeunit.testCase({
     // call again
     myProxy.unref();
     test.done();
+  },
+
+  "reentrance": function (test) {
+    var ArrayList = java.import('java.util.ArrayList');
+    var list = new ArrayList();
+    var callCount = 0;
+
+    var myProxy = java.newProxy('RunInterface$Interface0Arg', {
+      run: function () {
+        var iterator = list.iteratorSync();
+        test.equals(iterator.equalsSync(false), false);
+        test.equals(iterator.hasNextSync(), false);
+        callCount++;
+      }
+    });
+
+    var runInterface = java.newInstanceSync("RunInterface");
+    runInterface.run0ArgsSync(myProxy);
+
+    test.equal(callCount, 2 );
+
+    test.done();
   }
 });
