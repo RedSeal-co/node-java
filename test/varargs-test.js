@@ -7,6 +7,36 @@ var util = require('util');
 
 exports['varargs'] = nodeunit.testCase({
 
+  'array signature inferrence': function(test) {
+    test.expect(9);
+    var Test = java.import('Test');
+    test.strictEqual(Test.varArgsSignatureSync([]), 'Object...');
+    test.strictEqual(Test.varArgsSignatureSync(['a', 'b']), 'String...');
+    test.strictEqual(Test.varArgsSignatureSync([1, 2]), 'Integer...');
+    test.strictEqual(Test.varArgsSignatureSync([1.1, 2]), 'Number...');
+    test.strictEqual(Test.varArgsSignatureSync([1.1, 'a']), 'Object...');
+    test.strictEqual(Test.varArgsSignatureSync([true, 'a']), 'Object...');
+    test.strictEqual(Test.varArgsSignatureSync([true, 1]), 'Object...');
+    test.strictEqual(Test.varArgsSignatureSync([true, 1.1]), 'Object...');
+    test.strictEqual(Test.varArgsSignatureSync([true, false]), 'Boolean...');
+    test.done();
+  },
+
+  'variadic signature inferrence': function(test) {
+    test.expect(9);
+    var Test = java.import('Test');
+    test.strictEqual(Test.varArgsSignatureSync(), 'Object...');
+    test.strictEqual(Test.varArgsSignatureSync('a', 'b'), 'String...');
+    test.strictEqual(Test.varArgsSignatureSync(1, 2), 'Integer...');
+    test.strictEqual(Test.varArgsSignatureSync(1.1, 2), 'Number...');
+    test.strictEqual(Test.varArgsSignatureSync(1.1, 'a'), 'Object...');
+    test.strictEqual(Test.varArgsSignatureSync(true, 'a'), 'Object...');
+    test.strictEqual(Test.varArgsSignatureSync(true, 1), 'Object...');
+    test.strictEqual(Test.varArgsSignatureSync(true, 1.1), 'Object...');
+    test.strictEqual(Test.varArgsSignatureSync(true, false), 'Boolean...');
+    test.done();
+  },
+
   'variadic no args': function(test) {
     test.expect(1);
     var String = java.import('java.lang.String');
@@ -25,30 +55,6 @@ exports['varargs'] = nodeunit.testCase({
     test.expect(1);
     var String = java.import('java.lang.String');
     test.strictEqual(String.formatSync('%s--%s', 'hello', 'world'), 'hello--world');
-    test.done();
-  },
-
-  // These simple array tests pass because String.format takes an Object... varargs parameter.
-  // The current node-java bridge converts a plain javascript array to an Object[] array.
-  // TODO: consider an enhancement that detects the best common base type.
-  'simple array no args, passed to Object... varargs argument': function(test) {
-    test.expect(1);
-    var String = java.import('java.lang.String');
-    test.strictEqual(String.formatSync('nothing', []), 'nothing');
-    test.done();
-  },
-
-  'simple array one args, passed to Object... varargs argument': function(test) {
-    test.expect(1);
-    var String = java.import('java.lang.String');
-    test.strictEqual(String.formatSync('%s', ['hello']), 'hello');
-    test.done();
-  },
-
-  'simple array two args, passed to Object... varargs argument': function(test) {
-    test.expect(1);
-    var String = java.import('java.lang.String');
-    test.strictEqual(String.formatSync('%s--%s', ['hello', 'world']), 'hello--world');
     test.done();
   },
 
