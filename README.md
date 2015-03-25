@@ -1,8 +1,10 @@
-[![Build Status](https://travis-ci.org/joeferner/node-java.png)](https://travis-ci.org/joeferner/node-java)
+[![Build Status](https://travis-ci.org/RedSeal-co/node-java.png)](https://travis-ci.org/RedSeal-co/node-java)
 
 # java
 
 Bridge API to connect with existing Java APIs.
+
+** This is an experimental fork of [joeferner/node-java](https://github.com/joeferner/node-java). Unless you have good reason, you should use joeferner's fork. **
 
 [Google Groups Discussion Forum](https://groups.google.com/forum/#!forum/node-java)
 
