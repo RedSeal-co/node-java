@@ -6,12 +6,36 @@ var _ = require('lodash');
 var java = require("../");
 var nodeunit = require("nodeunit");
 
-java.asyncOptions = {
-  syncSuffix: "Sync",
-  asyncSuffix: ""
-};
-
 module.exports = {
+
+  launch: function(test) {
+    var api = _.functions(java);
+
+    test.ok(_.includes(api, 'isJvmCreated'), 'Expected `isJvmCreated` to be present, but it is NOT.');
+
+    // Assert that the JVM is not yet created
+    test.ok(!java.isJvmCreated());
+
+    java.asyncOptions = {
+      syncSuffix: "Sync",
+      asyncSuffix: ""
+    };
+
+    var start = process.hrtime();
+    java.launchJvm(function(err) {
+      var diff = process.hrtime(start);
+      var nanos = diff[0] * 1e9 + diff[1];
+      console.log('JVM launced in %dms', nanos/1e6);
+
+      test.ifError(err);
+
+      // Now assert that the JVM has been created
+      test.ok(java.isJvmCreated());
+
+      test.done();
+    });
+  },
+
   testAPI: function(test) {
     test.expect(5);
     var arrayList = java.newInstanceSync("java.util.ArrayList");
