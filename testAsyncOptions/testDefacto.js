@@ -9,7 +9,7 @@ var nodeunit = require("nodeunit");
 module.exports = {
 
   launch: function(test) {
-    test.expect(6);
+    test.expect(8);
     var api = _.functions(java);
     test.ok(_.includes(api, 'isJvmCreated'), 'Expected `isJvmCreated` to be present, but it is NOT.');
     test.ok(!java.isJvmCreated());
@@ -30,6 +30,8 @@ module.exports = {
     }
 
     java.registerClient(before, after);
+    java.registerClient(undefined, after);
+    java.registerClient(before, undefined);
 
     java.launchJvm(function(err) {
       test.ifError(err);
