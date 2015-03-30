@@ -9,11 +9,9 @@ var nodeunit = require("nodeunit");
 module.exports = {
 
   launch: function(test) {
+    test.expect(6);
     var api = _.functions(java);
-
     test.ok(_.includes(api, 'isJvmCreated'), 'Expected `isJvmCreated` to be present, but it is NOT.');
-
-    // Assert that the JVM is not yet created
     test.ok(!java.isJvmCreated());
 
     java.asyncOptions = {
@@ -21,17 +19,21 @@ module.exports = {
       asyncSuffix: ""
     };
 
-    var start = process.hrtime();
-    java.launchJvm(function(err) {
-      var diff = process.hrtime(start);
-      var nanos = diff[0] * 1e9 + diff[1];
-      console.log('JVM launced in %dms', nanos/1e6);
+    function before(callback) {
+      test.ok(!java.isJvmCreated());
+      callback();
+    }
 
-      test.ifError(err);
-
-      // Now assert that the JVM has been created
+    function after(callback) {
       test.ok(java.isJvmCreated());
+      callback();
+    }
 
+    java.registerClient(before, after);
+
+    java.launchJvm(function(err) {
+      test.ifError(err);
+      test.ok(java.isJvmCreated());
       test.done();
     });
   },
