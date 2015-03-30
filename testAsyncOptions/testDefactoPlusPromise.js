@@ -6,14 +6,38 @@ var java = require("../");
 var assert = require("assert");
 var _ = require('lodash');
 
-java.asyncOptions = {
-  syncSuffix: "Sync",
-  asyncSuffix: "",
-  promiseSuffix: 'Promise',
-  promisify: require('when/node').lift         // https://github.com/cujojs/when
-};
-
 module.exports = {
+  launch: function(test) {
+    test.expect(5);
+    var api = _.functions(java);
+    test.ok(_.includes(api, 'isJvmCreated'), 'Expected `isJvmCreated` to be present, but it is NOT.');
+    test.ok(!java.isJvmCreated());
+
+    java.asyncOptions = {
+      syncSuffix: "Sync",
+      asyncSuffix: "",
+      promiseSuffix: 'Promise',
+      promisify: require('when/node').lift         // https://github.com/cujojs/when
+    };
+
+    function before(callback) {
+      test.ok(!java.isJvmCreated());
+      callback();
+    }
+
+    function after(callback) {
+      test.ok(java.isJvmCreated());
+      callback();
+    }
+
+    java.registerClient(before, after);
+
+    java.launchJvm().then(function() {
+      test.ok(java.isJvmCreated());
+      test.done();
+    });
+  },
+
   testAPI: function(test) {
     test.expect(5);
     var arrayList = java.newInstanceSync("java.util.ArrayList");
