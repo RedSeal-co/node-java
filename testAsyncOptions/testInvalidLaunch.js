@@ -1,7 +1,5 @@
 // testInvalidLaunch.js
 
-// In the defacto case, the developer sets asyncOptions, but specifies the defacto standard behavior.
-
 var _ = require('lodash');
 var java = require("../");
 var nodeunit = require("nodeunit");
@@ -52,7 +50,7 @@ module.exports = {
       promisify: require('when/node').lift         // https://github.com/cujojs/when
     };
 
-    java.launchJvm().then(function() {
+    java.launchJvm().done(function() {
       test.ok(java.isJvmCreated());
       test.done();
     });

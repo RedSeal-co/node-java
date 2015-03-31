@@ -34,7 +34,7 @@ module.exports = {
     java.registerClient(null, after);
     java.registerClient(before);
 
-    java.launchJvm().then(function() {
+    java.launchJvm().done(function() {
       test.ok(java.isJvmCreated());
       test.done();
     });

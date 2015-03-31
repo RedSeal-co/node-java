@@ -23,7 +23,7 @@ module.exports = {
     function before() {
       var promise = when.promise(function(resolve, reject) {
         test.ok(!java.isJvmCreated());
-        resolve(null);
+        resolve();
       });
       return promise;
     }
@@ -31,7 +31,7 @@ module.exports = {
     function after() {
       var promise = when.promise(function(resolve, reject) {
         test.ok(java.isJvmCreated());
-        resolve(null);
+        resolve();
       });
       return promise;
     }
@@ -40,7 +40,7 @@ module.exports = {
     java.registerClientP(null, after);
     java.registerClientP(before);
 
-    java.launchJvm().then(function() {
+    java.launchJvm().done(function() {
       test.ok(java.isJvmCreated());
       test.done();
     });
