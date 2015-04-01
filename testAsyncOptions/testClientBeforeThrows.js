@@ -1,4 +1,4 @@
-// testClientBeforeError.js
+// testClientBeforeThrows.js
 
 var _ = require('lodash');
 var java = require("../");
@@ -6,7 +6,7 @@ var nodeunit = require("nodeunit");
 
 module.exports = {
 
-  clientBeforeError: function(test) {
+  clientBeforeThrows: function(test) {
     test.expect(6);
     test.ok(!java.isJvmCreated());
 
@@ -16,7 +16,7 @@ module.exports = {
 
     function before(callback) {
       test.ok(!java.isJvmCreated());
-      callback(new Error('dummy error'));
+      throw new Error('dummy error');
     }
 
     java.registerClient(before);

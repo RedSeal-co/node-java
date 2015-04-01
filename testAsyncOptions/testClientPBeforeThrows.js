@@ -7,7 +7,7 @@ var when = require('when');
 
 module.exports = {
 
-  clientBeforeBError: function(test) {
+  clientBeforePThrows: function(test) {
     test.expect(6);
     test.ok(!java.isJvmCreated());
 
@@ -20,7 +20,7 @@ module.exports = {
     function beforeP() {
       var promise = when.promise(function(resolve, reject) {
         test.ok(!java.isJvmCreated());
-        reject(new Error('dummy error'));
+        throw new Error('dummy error');
       });
       return promise;
     }
