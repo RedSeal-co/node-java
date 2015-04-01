@@ -6,12 +6,40 @@ var _ = require('lodash');
 var java = require("../");
 var nodeunit = require("nodeunit");
 
-java.asyncOptions = {
-  syncSuffix: "Sync",
-  asyncSuffix: ""
-};
-
 module.exports = {
+
+  launch: function(test) {
+    test.expect(8);
+    var api = _.functions(java);
+    test.ok(_.includes(api, 'isJvmCreated'), 'Expected `isJvmCreated` to be present, but it is NOT.');
+    test.ok(!java.isJvmCreated());
+
+    java.asyncOptions = {
+      syncSuffix: "Sync",
+      asyncSuffix: ""
+    };
+
+    function before(callback) {
+      test.ok(!java.isJvmCreated());
+      callback();
+    }
+
+    function after(callback) {
+      test.ok(java.isJvmCreated());
+      callback();
+    }
+
+    java.registerClient(before, after);
+    java.registerClient(undefined, after);
+    java.registerClient(before, undefined);
+
+    java.launchJvm(function(err) {
+      test.ifError(err);
+      test.ok(java.isJvmCreated());
+      test.done();
+    });
+  },
+
   testAPI: function(test) {
     test.expect(5);
     var arrayList = java.newInstanceSync("java.util.ArrayList");
