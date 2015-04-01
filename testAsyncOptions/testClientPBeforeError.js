@@ -7,7 +7,7 @@ var when = require('when');
 
 module.exports = {
 
-  clientBeforeBError: function(test) {
+  clientPBeforeError: function(test) {
     test.expect(6);
     test.ok(!java.isJvmCreated());
 

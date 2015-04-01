@@ -1,4 +1,4 @@
-// testClientPBeforeError.js
+// testClientPBeforeThrows.js
 
 var _ = require('lodash');
 var java = require("../");
@@ -7,7 +7,7 @@ var when = require('when');
 
 module.exports = {
 
-  clientBeforePThrows: function(test) {
+  clientPBeforeThrows: function(test) {
     test.expect(6);
     test.ok(!java.isJvmCreated());
 
