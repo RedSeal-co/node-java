@@ -21,7 +21,7 @@ module.exports = {
 
     java.registerClient(before);
 
-    java.launchJvm(function(err) {
+    java.ensureJvm(function(err) {
       test.ok(_.isObject(err));
       test.ok(err instanceof Error);
       test.strictEqual(err.message, 'dummy error');

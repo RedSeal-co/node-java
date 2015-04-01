@@ -27,7 +27,7 @@ module.exports = {
 
     java.registerClientP(beforeP);
 
-    java.launchJvm().done(
+    java.ensureJvm().done(
       function () {
         test.ok(false);
       },

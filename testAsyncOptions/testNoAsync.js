@@ -40,7 +40,7 @@ module.exports = {
     java.registerClientP(null, after);
     java.registerClientP(before);
 
-    java.launchJvm().done(function() {
+    java.ensureJvm().done(function() {
       test.ok(java.isJvmCreated());
       test.done();
     });
