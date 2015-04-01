@@ -15,8 +15,8 @@ module.exports = {
       asyncSuffix: ""
     };
 
-    // First show that if asyncOptions.promisify is undefined, using the promise variant of launchJvm throws an error.
-    test.throws(function() { java.launchJvm(); }, Error, /requires its one argument to be a callback function/);
+    // First show that if asyncOptions.promisify is undefined, using the promise variant of ensureJvm throws an error.
+    test.throws(function() { java.ensureJvm(); }, Error, /requires its one argument to be a callback function/);
 
     test.ok(!java.isJvmCreated());
     test.done();
@@ -32,7 +32,7 @@ module.exports = {
       promisify: require('when/node').lift         // https://github.com/cujojs/when
     };
 
-    test.throws(function() { java.launchJvm('foo'); }, Error, /requires its one argument to be a callback function/);
+    test.throws(function() { java.ensureJvm('foo'); }, Error, /requires its one argument to be a callback function/);
 
     test.ok(!java.isJvmCreated());
     test.done();
@@ -50,7 +50,7 @@ module.exports = {
       promisify: require('when/node').lift         // https://github.com/cujojs/when
     };
 
-    java.launchJvm().done(function() {
+    java.ensureJvm().done(function() {
       test.ok(java.isJvmCreated());
       test.done();
     });
